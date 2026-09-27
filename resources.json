@@ -1,0 +1,16 @@
+{
+  "PCM/Content/Database/Local.cdb": "a76c829d8a772c90df4639b23bf6aeca38d1d3ffbc6739d28e02a12d7c271133",
+  "PCM/Content/Database/OfficialLocal.cdb": "a480b084b175a6cf83cd64b8a078ca7d421878b166ac15076833a3231eb4bb37",
+  "PCM/Content/Gui/fonts_sma.xml": "216612e343fe62cf1467575cbbf0577f4382ddf9b0da8789a5ee4156a4c9a18f",
+  "PCM/Content/Gui/fonts_sma.uasset": "4aa42e539a25e34f181d9390cfe7cc62c96e8cfc1a07e2ad2026fe18baf4a465",
+  "PCM/Content/Gui/fonts_sma.uexp": "840bdc09b40b64123cb90db449a924b5ed29fb606be12a6cd395c91157777ecf",
+  "PCM/Content/Gui/fonts_nor.xml": "e665ca33c8460812922087fb6306c895dd6b13beca103378d75cea919bbb7bf4",
+  "PCM/Content/Gui/fonts_nor.uasset": "cff611d3902f676b9ceec42c777a303252c79c1308769a268203374e33c6be82",
+  "PCM/Content/Gui/fonts_nor.uexp": "4dd9e3a3c9dd2ed1caa942df5b5769117aff4240d315ca8ab70ca125ea9905e3",
+  "PCM/Content/Gui/fonts_big.xml": "5e38a14fbca94d262a13ea4f03ac824308cc1f211e86ed349b6dda2a20286fd7",
+  "PCM/Content/Gui/fonts_big.uasset": "2850ce753f03a00684cc572adb16699f2afb8d9f5ea3b2c8d7e58ab80dddd879",
+  "PCM/Content/Gui/fonts_big.uexp": "11d83d03797fc821862cb6fcc2f51904d62b0e595ad95167a3fe1568a7f7f97b",
+  "PCM/Content/Gui/fonts_4k.xml": "ae24684d2f6595acf3e8df3bc239b1382c4f9d63e3021c9733ed82902b2f437a",
+  "PCM/Content/Gui/fonts_4k.uasset": "cf44c6447c56f28c76cea714da18b17cdb100956092510461371d93d5cfafc40",
+  "PCM/Content/Gui/fonts_4k.uexp": "bbdfc81c6fb37f7e3a1a76f1386247698400088e0b58c2f90a33d6c32cf41afe"
+}

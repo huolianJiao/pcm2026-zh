@@ -1,0 +1,15 @@
+/build/
+/build-*/
+/private-release/
+/.venv/
+__pycache__/
+*.pyc
+*.dll
+*.pdb
+*.pak
+*.cdb
+*.uexp
+*.uasset
+*.bgra
+*.zip
+/PCM26-ZH-Backup/

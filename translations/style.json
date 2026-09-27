@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "game": "Pro Cycling Manager 2026",
+  "user_preferences": {
+    "target_language": "仅替换丹麦语（Dansk）；英语保留原版英文",
+    "career_game_mode": "经理模式",
+    "pro_cyclist_game_mode": "职业车手模式",
+    "months": "阿拉伯数字月份，如 1月、8月至10月；不用一月、八月"
+  },
+  "scope": "Career 指车队经营模式时使用经理模式；描述个人职业历程时保留职业生涯。月份规范应用于本版全部译文。",
+  "geography": "国家和地区名称暂保留原文，单列待验证：PCM2023 曾存在依赖英文名称的资源查找，PCM2026 尚未验证。"
+}
