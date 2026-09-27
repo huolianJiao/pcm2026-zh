@@ -22,15 +22,23 @@ git push -u origin main
 完成本地构建和验证后：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\New-Release.ps1 -Version v0.4.1-preview
+powershell -NoProfile -ExecutionPolicy Bypass -File .\New-Release.ps1 -Version v0.4.2-preview
 ```
 
-得到 `build/releases/PCM26-ZH-v0.4.1-preview.zip` 和同名 `.zip.sha256`。ZIP内包含用户直接运行的安装器、校验器、卸载器和补丁payload，不包含原版DLL备份、存档、解压库或Python。
+得到 `build/releases/PCM26-ZH-v0.4.2-preview.zip` 和同名 `.zip.sha256`。ZIP内包含用户直接运行的安装器、校验器、卸载器和补丁payload，不包含原版DLL备份、存档、解压库或Python。
+
+发布前检查压缩包及真实安装流程（最后两项参数使用维护者本机的原版DLL和已提取的PCM/Content目录）：
+
+```powershell
+.\.venv\Scripts\python.exe tools\verify_release.py build\releases\PCM26-ZH-v0.4.2-preview.zip --original-dll "D:\Backup\GameCyclingDLL_Master.original.dll" --assets "D:\Extracted\PCM\Content"
+```
+
+该工具会检查ZIP、脚本与源码一致性、pak内容、两份数据库非目标语言列，并在临时目录执行真实payload安装和卸载，不操作正式游戏目录。
 
 发布者也可复用已经核验的payload目录，无需重新绘制字体：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\New-Release.ps1 -Version v0.4.1-preview -PayloadPath "D:\Prepared\pcm2026-release04"
+powershell -NoProfile -ExecutionPolicy Bypass -File .\New-Release.ps1 -Version v0.4.2-preview -PayloadPath "D:\Prepared\pcm2026-release04"
 ```
 
 Payload需要 manifest.json、GameCyclingDLL_Master.dll 和 manifest指定的pak。打包脚本校验哈希且不覆盖同名已生成版本。再次发布前更新版本号、CHANGELOG.md与docs/RELEASE_NOTES.md。
@@ -40,14 +48,14 @@ Payload需要 manifest.json、GameCyclingDLL_Master.dll 和 manifest指定的pak
 先把本次源码提交并推送，再创建相同版本的tag：
 
 ```powershell
-git tag v0.4.1-preview
-git push origin v0.4.1-preview
+git tag v0.4.2-preview
+git push origin v0.4.2-preview
 ```
 
 有GitHub CLI时，先运行 `gh auth login`，然后：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Publish-Release.ps1 -Repository OWNER/pcm2026-zh -Version v0.4.1-preview
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Publish-Release.ps1 -Repository OWNER/pcm2026-zh -Version v0.4.2-preview
 ```
 
 该脚本验证ZIP校验和，上传ZIP及校验文件，创建 **Draft Release**；带后缀的版本会标为Pre-release。它要求远端tag已存在，不会自动创建tag或直接公开发布。打开GitHub草稿核对说明和附件，再点击Publish release。

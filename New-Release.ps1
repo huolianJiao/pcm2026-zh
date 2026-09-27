@@ -1,5 +1,5 @@
 ﻿param(
-    [ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$')][string]$Version='v0.4.1-preview',
+    [ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$')][string]$Version='v0.4.2-preview',
     [string]$PayloadPath=(Join-Path $PSScriptRoot 'build\payload')
 )
 $ErrorActionPreference='Stop'
@@ -24,6 +24,9 @@ foreach($file in @('manifest.json','GameCyclingDLL_Master.dll',$m.pak)){
 }
 $m | Add-Member -NotePropertyName release_version -NotePropertyValue $Version -Force
 $m | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $folder 'payload\manifest.json') -Encoding UTF8
+foreach($entry in @(@('GameCyclingDLL_Master.dll',$m.dll_after),@($m.pak,$m.sha256))){
+    if((Get-FileHash -LiteralPath (Join-Path (Join-Path $folder 'payload') $entry[0]) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry[1]){throw ('Staged payload changed during packaging: '+$entry[0])}
+}
 Compress-Archive -LiteralPath $folder -DestinationPath $zip -CompressionLevel Optimal
 $digest=(Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 [IO.File]::WriteAllText(($zip+'.sha256'),($digest+'  '+[IO.Path]::GetFileName($zip)+"`n"),[Text.UTF8Encoding]::new($false))

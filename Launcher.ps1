@@ -10,7 +10,7 @@ try {
     foreach($root in $roots){
         $vdf=Join-Path $root 'steamapps\libraryfolders.vdf'
         if(Test-Path -LiteralPath $vdf){
-            $text=Get-Content -LiteralPath $vdf -Raw
+            $text=Get-Content -LiteralPath $vdf -Raw -Encoding UTF8
             foreach($match in [regex]::Matches($text,'"path"\s+"([^"]+)"')){$libraries+=$match.Groups[1].Value.Replace('\\','\')}
         }
     }

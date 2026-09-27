@@ -1,12 +1,12 @@
 # PCM26 简体中文汉化
 
-Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.4.1-preview**。仅替换 **Dansk（丹麦语）**，英语保留原文。
+Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.4.2-preview**。仅替换 **Dansk（丹麦语）**，英语保留原文。
 
 非官方项目，许可范围与已知分发风险见[发布风险核查](docs/RIGHTS_REVIEW.md)。本版新增事务日志、失败回滚和中断恢复，仍为预览版。
 
 ## 普通玩家安装
 
-1. 在本仓库 Releases 下载 **PCM26-ZH-v0.4.1-preview.zip**，不要下载 GitHub 自动生成的 Source code ZIP。
+1. 在本仓库 Releases 下载 **PCM26-ZH-v0.4.2-preview.zip**，不要下载 GitHub 自动生成的 Source code ZIP。
 2. 保存进度并退出游戏。若安装过其他汉化，先使用原补丁的卸载工具恢复原版。
 3. 把 ZIP 完整解压到一个独立目录。不要直接在压缩软件里运行，也不必复制到游戏目录。
 4. 双击 **Install.cmd**。检测到 Steam 游戏目录后，输入 Y 确认；未找到时粘贴自己的游戏安装目录，例如 `D:\SteamLibrary\steamapps\common\Pro Cycling Manager 2026`。

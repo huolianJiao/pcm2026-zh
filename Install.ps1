@@ -18,7 +18,7 @@ function Plain([string]$path) {
  }
 }
 function Current([string]$p) {if(Test-Path -LiteralPath $p){Hash $p}else{'absent'}}
-function AtomicCopy([string]$source,[string]$dest,[string]$expected) {
+function AtomicCopy([string]$source,[string]$dest,[string]$expected,[string]$previous='') {
  Plain $source;Plain $dest
  if((Hash $source) -ne $expected){throw ('Source hash mismatch: '+$source)}
  $temp=$dest+'.pcm26-'+[Guid]::NewGuid().ToString('N')+'.tmp'
@@ -26,6 +26,7 @@ function AtomicCopy([string]$source,[string]$dest,[string]$expected) {
  $f=[IO.File]::Open($temp,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::None)
  try {$f.Flush($true)} finally {$f.Dispose()}
  if((Hash $temp) -ne $expected){throw 'Staged file hash mismatch'}
+ if($previous -and (Current $dest) -ne $previous){throw ('Target changed before replacement: '+$dest)}
  if(Test-Path -LiteralPath $dest){[IO.File]::Replace($temp,$dest,[NullString]::Value)}else{[IO.File]::Move($temp,$dest)}
  if((Hash $dest) -ne $expected){throw ('Target hash mismatch: '+$dest)}
 }
@@ -56,14 +57,20 @@ if(!(Test-Path -LiteralPath $dll -PathType Leaf) -or !(Test-Path -LiteralPath (S
 function Rollback {
  Closed
  $j=Get-Content -LiteralPath $pending -Raw -Encoding UTF8 | ConvertFrom-Json
- if($j.transaction -cnotmatch '^txn-[a-f0-9]{32}$' -or $j.game -ne $game){throw 'Invalid recovery journal'}
+ if($j.schema -ne 1 -or $j.mode -notin @('Install','Uninstall') -or $j.transaction -cnotmatch '^txn-[a-f0-9]{32}$' -or $j.game -ne $game){throw 'Invalid recovery journal'}
  $dir=Join-Path $backup $j.transaction;Plain $dir
+ if($j.before.dll -cnotmatch '^[a-f0-9]{64}$' -or $j.after.dll -cnotmatch '^[a-f0-9]{64}$'){throw 'Invalid DLL recovery state'}
+ if($j.mode -eq 'Install'){
+  if($j.before.pak -ne 'absent' -or $j.before.state -ne 'absent' -or $j.after.pak -eq 'absent' -or $j.after.state -eq 'absent'){throw 'Invalid install recovery state'}
+ }elseif($j.after.pak -ne 'absent' -or $j.after.state -ne 'absent' -or $j.before.pak -eq 'absent' -or $j.before.state -eq 'absent'){throw 'Invalid uninstall recovery state'}
  $items=@(@('dll',$dll,'before.dll'),@('pak',$pak,'before.pak'),@('state',$statePath,'before.json'))
+ $observed=@{}
  foreach($item in $items){
   $key=$item[0];$before=$j.before.$key;$after=$j.after.$key
   foreach($h in @($before,$after)){if($h -cnotmatch '^(absent|[a-f0-9]{64})$'){throw 'Invalid recovery hash'}}
   Plain $item[1]
-  if((Current $item[1]) -notin @($before,$after)){throw ('Recovery refused: external change: '+$item[1])}
+  $observed[$key]=Current $item[1]
+  if($observed[$key] -notin @($before,$after)){throw ('Recovery refused: external change: '+$item[1])}
   if($before -ne 'absent'){
    $saved=Join-Path $dir $item[2];Plain $saved
    if((Hash $saved) -ne $before){throw ('Recovery backup damaged: '+$saved)}
@@ -72,8 +79,10 @@ function Rollback {
  foreach($item in $items){
   $before=$j.before.($item[0]);$dest=$item[1]
   if((Current $dest) -eq $before){continue}
-  if($before -eq 'absent'){[IO.File]::Move($dest,(Join-Path $dir ('rollback-'+$item[0]+'-'+[Guid]::NewGuid().ToString('N'))))}
-  else{AtomicCopy (Join-Path $dir $item[2]) $dest $before}
+  if($before -eq 'absent'){
+   if((Current $dest) -ne $observed[$item[0]]){throw 'File changed during recovery'}
+   [IO.File]::Move($dest,(Join-Path $dir ('rollback-'+$item[0]+'-'+[Guid]::NewGuid().ToString('N'))))
+  }else{AtomicCopy (Join-Path $dir $item[2]) $dest $before $observed[$item[0]]}
  }
  foreach($item in $items){if((Current $item[1]) -ne $j.before.($item[0])){throw 'Rollback verification failed'}}
  [IO.File]::Move($pending,(Join-Path $dir 'rolled-back.json'))
@@ -135,12 +144,14 @@ try {
  AtomicJson $journal $pending
  try {
   if($Mode -eq 'Install'){
-   AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll
-   AtomicCopy (Join-Path $dir 'next.pak') $pak $after.pak
-   AtomicCopy (Join-Path $dir 'next.json') $statePath $after.state
+   AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll
+   AtomicCopy (Join-Path $dir 'next.pak') $pak $after.pak $before.pak
+   AtomicCopy (Join-Path $dir 'next.json') $statePath $after.state $before.state
   }else{
-   AtomicCopy $original $dll $after.dll
+   AtomicCopy $original $dll $after.dll $before.dll
+   if((Current $pak) -ne $before.pak){throw 'Overlay changed during uninstall'}
    [IO.File]::Move($pak,(Join-Path $dir 'disabled-overlay.pak'))
+   if((Current $statePath) -ne $before.state){throw 'Installer state changed during uninstall'}
    [IO.File]::Move($statePath,(Join-Path $dir 'uninstalled.json'))
   }
   if((Current $dll) -ne $after.dll -or (Current $pak) -ne $after.pak -or (Current $statePath) -ne $after.state){throw 'Final verification failed'}

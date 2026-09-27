@@ -27,13 +27,13 @@ class RecoveryTests(unittest.TestCase):
     def require_ok(self,mode):
         r=self.run_mode(mode);self.assertEqual(r.returncode,0,r.stdout+r.stderr)
     def test_install_mid_write_failure_restores_original(self):
-        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll","throw 'simulated write failure'")
+        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll","throw 'simulated write failure'")
         r=self.run_mode('Install',p);self.assertNotEqual(r.returncode,0)
         self.assertIn(b'previous state restored',r.stderr)
         self.assertEqual(self.dll.read_bytes(),self.original);self.assertFalse(self.pak.exists());self.assertFalse(self.pending.exists())
         self.assertEqual((self.backup/'GameCyclingDLL_Master.original.dll').read_bytes(),self.original)
     def test_process_exit_then_recover_without_payload(self):
-        p=self.inject("AtomicCopy (Join-Path $dir 'next.pak') $pak $after.pak","[Environment]::Exit(86)")
+        p=self.inject("AtomicCopy (Join-Path $dir 'next.pak') $pak $after.pak $before.pak","[Environment]::Exit(86)")
         self.assertEqual(self.run_mode('Install',p).returncode,86)
         self.assertTrue(self.pending.exists());self.assertEqual(self.dll.read_bytes(),self.patched)
         self.assertNotEqual(self.run_mode('Install').returncode,0)
@@ -49,7 +49,7 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual((self.backup/'installed.json').read_bytes(),state);self.assertFalse(self.pending.exists())
         self.require_ok('Check')
     def test_recovery_refuses_external_changes(self):
-        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll","[Environment]::Exit(86)")
+        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll","[Environment]::Exit(86)")
         self.assertEqual(self.run_mode('Install',p).returncode,86)
         self.dll.write_bytes(b'external Steam update')
         self.assertNotEqual(self.run_mode('Recover').returncode,0)
@@ -64,6 +64,37 @@ class RecoveryTests(unittest.TestCase):
     def test_manifest_path_traversal_rejected(self):
         self.manifest['pak']='../outside.pak';(self.payload/'manifest.json').write_text(json.dumps(self.manifest))
         self.assertNotEqual(self.run_mode('Install').returncode,0);self.assertEqual(self.dll.read_bytes(),self.original)
+    def test_external_overlay_created_mid_install_is_preserved(self):
+        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll", "[IO.File]::WriteAllText($pak,'external update')")
+        r=self.run_mode('Install',p);self.assertNotEqual(r.returncode,0)
+        self.assertEqual(self.pak.read_text(),'external update');self.assertTrue(self.pending.exists())
+        self.assertIn(b'Target changed before replacement',r.stderr)
+    def test_journal_cannot_mark_original_dll_absent(self):
+        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll","[Environment]::Exit(86)")
+        self.assertEqual(self.run_mode('Install',p).returncode,86)
+        j=json.loads(self.pending.read_text());j['before']['dll']='absent'
+        self.pending.write_text(json.dumps(j))
+        self.assertNotEqual(self.run_mode('Recover').returncode,0)
+        self.assertEqual(self.dll.read_bytes(),self.patched);self.assertTrue(self.pending.exists())
+    def test_recovery_rejects_corrupted_transaction_backup(self):
+        p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll","[Environment]::Exit(86)")
+        self.assertEqual(self.run_mode('Install',p).returncode,86)
+        j=json.loads(self.pending.read_text());(self.backup/j['transaction']/'before.dll').write_bytes(b'bad backup')
+        self.assertNotEqual(self.run_mode('Recover').returncode,0)
+        self.assertEqual(self.dll.read_bytes(),self.patched);self.assertTrue(self.pending.exists())
+    def test_uninstall_process_exit_can_recover(self):
+        self.require_ok('Install')
+        p=self.inject("[IO.File]::Move($statePath,(Join-Path $dir 'uninstalled.json'))","[Environment]::Exit(86)")
+        self.assertEqual(self.run_mode('Uninstall',p).returncode,86)
+        self.require_ok('Recover');self.require_ok('Check')
+        self.assertEqual(self.dll.read_bytes(),self.patched);self.assertEqual(self.pak.read_bytes(),self.overlay)
+    def test_cmd_preserves_launcher_failure_exit_code(self):
+        folder=self.root/'cmd-test';folder.mkdir()
+        (folder/'Launcher.ps1').write_text('exit 37')
+        (folder/'Install.cmd').write_bytes((ROOT/'Install.cmd').read_bytes())
+        env=os.environ.copy();env.pop('PSModulePath',None)
+        r=subprocess.run(['cmd.exe','/d','/c','Install.cmd'],cwd=folder,input=b'\r\n',capture_output=True,env=env)
+        self.assertEqual(r.returncode,37,r.stdout+r.stderr)
     def test_concurrent_installer_lock(self):
         import ctypes
         from ctypes import wintypes
@@ -75,3 +106,4 @@ class RecoveryTests(unittest.TestCase):
         try:self.assertNotEqual(self.run_mode('Install').returncode,0)
         finally:kernel.CloseHandle(handle)
         self.assertEqual(self.dll.read_bytes(),self.original)
+
