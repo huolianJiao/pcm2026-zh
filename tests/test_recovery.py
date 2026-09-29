@@ -10,7 +10,7 @@ class RecoveryTests(unittest.TestCase):
         self.game=self.root/'Game with spaces';self.payload=self.root/'payload';self.payload.mkdir()
         self.dll=self.game/'PCM/Binaries/Win64/GameCyclingDLL_Master.dll';self.dll.parent.mkdir(parents=True)
         self.pak=self.game/'PCM/Content/Paks/pakchunk99-PCM2026ZH_P.pak';self.pak.parent.mkdir(parents=True)
-        self.backup=self.game/'PCM26-ZH-Backup';self.pending=self.backup/'pending.json'
+        self.backup=self.game/'PCM26-ZH-Backup-25503277';self.pending=self.backup/'pending.json'
         self.original=b'original DLL';self.patched=b'patched DLL';self.overlay=b'overlay data'
         self.dll.write_bytes(self.original)
         (self.payload/self.dll.name).write_bytes(self.patched);(self.payload/self.pak.name).write_bytes(self.overlay)
@@ -64,6 +64,21 @@ class RecoveryTests(unittest.TestCase):
     def test_manifest_path_traversal_rejected(self):
         self.manifest['pak']='../outside.pak';(self.payload/'manifest.json').write_text(json.dumps(self.manifest))
         self.assertNotEqual(self.run_mode('Install').returncode,0);self.assertEqual(self.dll.read_bytes(),self.original)
+    def test_steam_update_repair_archives_known_overlay(self):
+        legacy=b'old build overlay';self.pak.write_bytes(legacy)
+        self.manifest['replaces_overlay_sha256']=[sha(legacy)]
+        (self.payload/'manifest.json').write_text(json.dumps(self.manifest))
+        self.require_ok('Repair');self.require_ok('Check')
+        saved=list(self.backup.glob('update-*/previous-overlay.pak'))
+        self.assertEqual(len(saved),1);self.assertEqual(saved[0].read_bytes(),legacy)
+        self.require_ok('Uninstall');self.assertEqual(self.dll.read_bytes(),self.original)
+        self.assertFalse(self.pak.exists())
+    def test_steam_update_repair_refuses_unknown_overlay(self):
+        self.pak.write_bytes(b'unknown mod')
+        self.manifest['replaces_overlay_sha256']=[sha(b'known mod')]
+        (self.payload/'manifest.json').write_text(json.dumps(self.manifest))
+        self.assertNotEqual(self.run_mode('Repair').returncode,0)
+        self.assertEqual(self.pak.read_bytes(),b'unknown mod');self.assertEqual(self.dll.read_bytes(),self.original)
     def test_external_overlay_created_mid_install_is_preserved(self):
         p=self.inject("AtomicCopy (Join-Path $dir 'next.dll') $dll $after.dll $before.dll", "[IO.File]::WriteAllText($pak,'external update')")
         r=self.run_mode('Install',p);self.assertNotEqual(r.returncode,0)

@@ -26,7 +26,7 @@ def main():
         assert m['pak']=='pakchunk99-PCM2026ZH_P.pak'
         assert sha(payload/'GameCyclingDLL_Master.dll')==m['dll_after']
         assert sha(payload/m['pak'])==m['sha256']
-        for name in ('Install.ps1','Launcher.ps1','Install.cmd','Check.cmd','Uninstall.cmd','Recover.cmd'):
+        for name in ('Install.ps1','Launcher.ps1','Install.cmd','Check.cmd','Uninstall.cmd','Recover.cmd','Repair.cmd'):
             assert (package/name).read_bytes()==(ROOT/name).read_bytes(),('Script/source mismatch',name)
         files=read_overlay(payload/m['pak'])
         expected={f'PCM/Content/Gui/fonts_{s}.{e}' for s in ('sma','nor','big','4k') for e in ('xml','uasset','uexp')}
@@ -57,6 +57,6 @@ def main():
                 print('PASS: actual release payload '+mode,flush=True)
             assert sha(dll)==m['dll_before']
             assert not (game/'PCM/Content/Paks'/m['pak']).exists()
-            assert sha(game/'PCM26-ZH-Backup/GameCyclingDLL_Master.original.dll')==m['dll_before']
+            assert sha(game/'PCM26-ZH-Backup-25503277/GameCyclingDLL_Master.original.dll')==m['dll_before']
         print('PASS: ZIP, scripts, payload hashes and all pak entries',flush=True)
 if __name__=='__main__':main()

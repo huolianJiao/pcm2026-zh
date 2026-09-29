@@ -7,7 +7,7 @@ from cdb import read_cdb
 from extract import table_columns
 
 ROOT=Path(__file__).resolve().parents[1]
-ORIGINAL='ef5ce7b20912b317db77c549f844206844b25d9ffb0a0f7e0e990744fcaac8d4'
+ORIGINAL='b1d51687cb2d232c9d66714868fdcb3a72a1dcae2e37065e4bd5c233a6957b89'
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def main():
     ap=argparse.ArgumentParser()
@@ -53,7 +53,7 @@ def main():
     release.finish()
     manifest_path=release.OUT/'manifest.json'
     manifest=json.loads(manifest_path.read_text())
-    manifest.update(version='0.4.0-preview',text_language='Danish only',english_restored=True)
+    manifest.update(version='0.5.0-preview',game_build='25503277',replaces_overlay_sha256=['a5e75f8c1775c88ab977ed501a67b04ec23c3e39965f3282295b65a86bcb569e', '669a93c634b32c027995023c1ec1c6aa8dece5dbccb4cfaf55539b94b55ccd71', '1fb5b2d3102596fd1771328eded05c4f0c88fb893d508764ea9598eee159d16e', '1a7945bc231dbb6679683613298ed62559744d896e26788bee07083f2fc64ccd'],text_language='Danish only',english_restored=True)
     manifest_path.write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     print('Build verified. Next: powershell -File .\\Install.ps1 -GamePath "'+str(args.game)+'"')
 if __name__=='__main__':main()

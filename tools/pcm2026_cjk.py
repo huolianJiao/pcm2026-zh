@@ -9,7 +9,15 @@ def align(n,a):return (n+a-1)//a*a
 
 def build_dll(mapping,diagnostic=False):
     data=bytearray((OUT/'GameCyclingDLL_Master.original.dll').read_bytes())
-    assert sha(data)=='ef5ce7b20912b317db77c549f844206844b25d9ffb0a0f7e0e990744fcaac8d4'
+    profiles={'ef5ce7b20912b317db77c549f844206844b25d9ffb0a0f7e0e990744fcaac8d4':(0,0),'b1d51687cb2d232c9d66714868fdcb3a72a1dcae2e37065e4bd5c233a6957b89':(23200,23088)}
+    assert sha(data) in profiles,'Unsupported game DLL'
+    unicode_delta,font_delta=profiles[sha(data)]
+    # Build 25503277: PDB function boundaries and relocation-normalized code/table
+    # comparison verified all three affected functions, not only patch bytes.
+    def relocate(rva):
+        if 0x6c4170<=rva<0x6c4800:return rva+unicode_delta
+        if 0x67d170<=rva<0x67dd00:return rva+font_delta
+        return rva
     pe=struct.unpack_from('<I',data,60)[0];opt=pe+24
     count=struct.unpack_from('<H',data,pe+6)[0];st=opt+struct.unpack_from('<H',data,pe+20)[0]
     sa,fa=struct.unpack_from('<II',data,opt+32)
@@ -39,15 +47,16 @@ def build_dll(mapping,diagnostic=False):
     table=bytearray(65536*4)
     for ch,index in mapping.items():struct.pack_into('<I',table,ord(ch)*4,index)
     code.extend(table)
-    for pos,target in fix:struct.pack_into('<i',code,pos,(labels[target] if isinstance(target,str) else target)-(base+pos+4))
+    for pos,target in fix:struct.pack_into('<i',code,pos,(labels[target] if isinstance(target,str) else relocate(target))-(base+pos+4))
     patches=[]
     def patch(rva,old,new):
+        rva=relocate(rva)
         before=bytes.fromhex(old);where=off(rva)
         assert data[where:where+len(before)]==before,(hex(rva),data[where:where+len(before)].hex(),old)
         assert len(new)<=len(before)
         after=new+b'\x90'*(len(before)-len(new));data[where:where+len(before)]=after
         patches.append(dict(rva=hex(rva),before=old,after=after.hex()))
-    def branch(src,dest):return b'\xe9'+struct.pack('<i',dest-src-5)
+    def branch(src,dest):return b'\xe9'+struct.pack('<i',relocate(dest)-relocate(src)-5)
     patch(0x6c421e,'0F851D010000',branch(0x6c421e,0x6c424a))
     patch(0x6c446a,'81FA13200000',branch(0x6c446a,labels['map']))
     patch(0x67d4a9,'7569',bytes.fromhex('7269'))
@@ -64,3 +73,4 @@ def build_dll(mapping,diagnostic=False):
     (OUT/'patch-disassembly.txt').write_text('\n'.join(f'{i.address:08x}: {i.mnemonic} {i.op_str}' for i in decoded))
     (OUT/'patches.json').write_text(json.dumps(patches,indent=2))
     return bytes(data)
+

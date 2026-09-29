@@ -10776,12 +10776,6 @@
     "zh": "制定赛历"
   },
   {
-    "idloc": 9541,
-    "strid": "News_CalendarReminderFirstPeriod",
-    "source_sha256": "4636ad33e64da8e25802539d74ec7e58de8a4756151bd6b8928805f1060b8ed5",
-    "zh": "已为你准备了涵盖整个赛季的比赛赛历。你可以在此页面进行修改： #PAGECALENDAR{$PAGECALENDARNAME}。请在 $DEADLINE 前完成修改。"
-  },
-  {
     "idloc": 9547,
     "strid": "News_Record_TourMountain_Unique",
     "source_sha256": "53a841c526fac01b179bac1551f5c0d974a52399d42cd320ab0a5d638868712b",
@@ -11032,12 +11026,6 @@
     "strid": "NewsObject_CalendarLastReminder",
     "source_sha256": "326229a6fcea54855e351c3de60703a639523fded482d66334daa22150bbf470",
     "zh": "确认赛历"
-  },
-  {
-    "idloc": 9685,
-    "strid": "News_CalendarLastReminder",
-    "source_sha256": "b7da9c06b3f99a5c1bd044e7d943bcc5f33ad60b5ee66828143c09e1cd96e585",
-    "zh": "这是对整个赛季赛历进行最终修改的最后一天。你可以在此页面完成最终申请： #PAGECALENDAR{$PAGECALENDARNAME}。"
   },
   {
     "idloc": 9686,
@@ -31078,5 +31066,53 @@
     "strid": "GamePreferences_RDC_Effect_Hint",
     "source_sha256": "1623c50cb4e37ccfc89e10b2f00193f1f79d9816ef382aa61869f6b3e93c937d",
     "zh": "此滑块调整比赛日状态对属性的影响。应用的增益/惩罚可与默认设置（x1.0）相比有所减少。"
+  },
+  {
+    "idloc": 9541,
+    "strid": "News_CalendarReminderFirstPeriod",
+    "source_sha256": "874bba2fa6515ab5faeb66e937acdea1f65f02d070e02882bc87eedcfd89b071",
+    "zh": "已为你安排全赛季赛历，可在 #PAGECALENDAR{$PAGECALENDARNAME} 页面调整。你需要在 $DEADLINE 前确定 $STARTDATE - $ENDDATE 期间的赛程。如需修改，请尽快操作。\\n\\n报名时段：\\n\\n$PERIODELIST"
+  },
+  {
+    "idloc": 9542,
+    "strid": "NewsObject_CalendarReminder",
+    "source_sha256": "b029daf9b57cefce52c6fa40dbb76a569d4a3896695193ab0288bd8fbe0a6122",
+    "zh": "提醒：制定赛历"
+  },
+  {
+    "idloc": 9543,
+    "strid": "News_CalendarReminder",
+    "source_sha256": "3d99c4562c58a37a965f3626d243359190a47573b95e88ecf6880c300ad753ea",
+    "zh": "请注意！你还有 $TIMELEFT 可以确定 $STARTDATE - $ENDDATE 期间的赛程。$DEADLINE 之后，将无法增删该时段的赛事。\\n\\n你可以在 #PAGECALENDAR{$PAGECALENDARNAME} 页面调整赛历。"
+  },
+  {
+    "idloc": 9685,
+    "strid": "News_CalendarLastReminder",
+    "source_sha256": "f484b182d52b1b7ed237f60e2d36c907ce29d02fa8795a824599ecc1483c1edd",
+    "zh": "今天是调整 $STARTDATE 至 $ENDDATE 期间赛程的最后一天。你可以在 #PAGECALENDAR{$PAGECALENDARNAME} 页面提交最后的参赛申请。"
+  },
+  {
+    "idloc": 19761,
+    "strid": "Hover_RiderInjured",
+    "source_sha256": "ea34335067f2320b48ca9aff69b78850b10f80656b3e24aa4efc210042d1848b",
+    "zh": "该车手受伤，无法报名参加本场比赛。"
+  },
+  {
+    "idloc": 19762,
+    "strid": "Hover_RiderBooked",
+    "source_sha256": "a783a1718d319c384da7dbb36f87b23ad1603d41deee4c6c5f183b49701417df",
+    "zh": "该车手已报名参加同一时段的其他比赛。"
+  },
+  {
+    "idloc": 19765,
+    "strid": "RaceCalendar",
+    "source_sha256": "853a67e1c32cabb2735ed11896f673be46f65e2d0a8095a1554af9f4e9192320",
+    "zh": "车手赛历"
+  },
+  {
+    "idloc": 19766,
+    "strid": "PeriodList",
+    "source_sha256": "2b6bb69d9ea319a1178cce866926f1056da7bb9ea80ce47e28371795719911aa",
+    "zh": "$DATEBEGIN - $DATEEND：报名截止日期：$DATE"
   }
 ]

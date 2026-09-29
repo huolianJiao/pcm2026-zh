@@ -4,14 +4,14 @@
 
 使用与发布说明匹配的 Windows Steam 版 PCM2026。保存进度，退出游戏；本补丁不修改存档。可以先自行备份存档。
 
-如果用过旧汉化，先用旧汉化的卸载工具恢复原版。安装器遇到未知DLL、已有覆盖pak或游戏运行中会停止，不会强行替换。
+Steam 更新到 Build 25503277 后残留本项目旧汉化时，使用 Repair.cmd；不要恢复旧版 DLL。安装器遇到未知DLL、已有覆盖pak或游戏运行中会停止，不会强行替换。
 
 ## 安装
 
-1. 在 Releases 的 Assets 中下载 `PCM26-ZH-v0.4.1-preview.zip`。`Source code`是开发源码，不是安装包。
+1. 在 Releases 的 Assets 中下载 `PCM26-ZH-v0.5.0-preview.zip`。`Source code`是开发源码，不是安装包。
 2. 完整解压，确认有 `Install.cmd`、`Check.cmd`、`Uninstall.cmd`、`Install.ps1`、`Launcher.ps1` 和 `payload` 文件夹。
 3. 双击 `Install.cmd`。自动发现一个游戏目录时确认；否则手动输入游戏根目录，不能选到 `PCM` 或 `Win64` 子目录。
-4. 安装器先检查补丁哈希和游戏DLL版本，再把原版DLL备份到游戏根目录 `PCM26-ZH-Backup`。
+4. 安装器先检查补丁哈希和游戏DLL版本，再把原版DLL备份到游戏根目录 `PCM26-ZH-Backup-25503277`。
 5. 成功后启动游戏，选择 **Dansk（丹麦语）**。English 仍显示英文，这是预期行为。
 6. 如语言未刷新，退出并重启游戏。双击 `Check.cmd` 验证文件是否与本包一致。
 
@@ -28,11 +28,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -GamePath "D:\
 - 替换 `PCM\Binaries\Win64\GameCyclingDLL_Master.dll`，增加中文字形映射与宽度处理。
 - 添加 `PCM\Content\Paks\pakchunk99-PCM2026ZH_P.pak`，覆盖两份语言数据库的丹麦语列及四档扩展字体。
 - 原游戏pak保持不变。英语及其他非丹麦语LOC列与原版一致。
-- 安装备份位于 `PCM26-ZH-Backup`，不要删除它。
+- 安装备份位于 `PCM26-ZH-Backup-25503277`，不要删除它。
 
 ## 失败回滚与中断恢复
 
-v0.4.1安装器在修改游戏前校验原版备份、保存本次操作前的DLL／pak／状态，并将新文件暂存且校验。替换使用同盘临时文件与单文件原子替换；操作日志写在 `PCM26-ZH-Backup/pending.json`。
+v0.4.1安装器在修改游戏前校验原版备份、保存本次操作前的DLL／pak／状态，并将新文件暂存且校验。替换使用同盘临时文件与单文件原子替换；操作日志写在 `PCM26-ZH-Backup-25503277/pending.json`。
 
 发生可捕获的写入错误时自动尝试恢复操作前状态；如果进程被结束或设备意外断电，下次操作会检测到未完成日志，停止安装，要求先运行 **Recover.cmd**。恢复会先核对当前文件与已知操作前／后哈希；遇到Steam更新或其他未知改动会停止，避免把新文件覆盖成旧版本。
 
@@ -50,7 +50,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -GamePath "D:\
 
 保存并退出游戏，双击同一安装包的 `Uninstall.cmd`。它会恢复经过哈希校验的原版DLL，将汉化pak移到备份目录，并保留备份。
 
-升级补丁时：用旧版 Uninstall.cmd 卸载，再运行新版 Install.cmd。不要直接用新包覆盖旧包；当前安装器有意拒绝未知版本。
+同一游戏 Build 升级补丁时：用旧版 Uninstall.cmd 卸载，再运行新版 Install.cmd。Steam 已更新时不要执行旧版卸载；本次适配使用 Repair.cmd，详见 README。不要直接用新包覆盖旧包；当前安装器有意拒绝未知版本。
 
 ## Steam更新之后
 
@@ -68,12 +68,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -GamePath "D:\
 | 有英文地名／提示 | 有明确未覆盖部分，见README；并非安装必然失败 |
 | 空白、方框、错位、崩溃 | 记录游戏版本、分辨率、界面位置和截图；必要时卸载本预览版 |
 
-## 当前本机旧工作区用户
 
-此前研究阶段 release04 由旧脚本安装，没有新安装器的状态文件。若要在同一台机器改用公开安装包，先在旧工作区执行：
-
-```powershell
-& .\tools\manage_pcm2026_cjk.ps1 -Mode Restore -Stage pcm2026-release04
-```
-
-之后再运行新包 Install.cmd。本说明不会自动卸载你已经安装的测试版。
+本次 Build 25503277 的问号修复，使用 **Repair.cmd**，详细步骤见 [README](../README.md#steam-更新后修复汉化玩家)。

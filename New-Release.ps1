@@ -1,5 +1,5 @@
-﻿param(
-    [ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$')][string]$Version='v0.4.2-preview',
+param(
+    [ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$')][string]$Version='v0.5.0-preview',
     [string]$PayloadPath=(Join-Path $PSScriptRoot 'build\payload')
 )
 $ErrorActionPreference='Stop'
@@ -15,7 +15,7 @@ $folder=Join-Path $dist $name
 $zip=Join-Path $dist ($name+'.zip')
 if((Test-Path -LiteralPath $folder) -or (Test-Path -LiteralPath $zip)){throw 'Version already packaged; choose a new version or move previous output'}
 New-Item -ItemType Directory -Force -Path (Join-Path $folder 'payload') | Out-Null
-foreach($file in @('Install.ps1','Launcher.ps1','Install.cmd','Check.cmd','Uninstall.cmd','Recover.cmd','README.md','LICENSE','THIRD_PARTY.md','CHANGELOG.md')){
+foreach($file in @('Install.ps1','Launcher.ps1','Install.cmd','Check.cmd','Uninstall.cmd','Recover.cmd','Repair.cmd','README.md','LICENSE','THIRD_PARTY.md','CHANGELOG.md')){
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination $folder
 }
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'docs') -Destination $folder -Recurse

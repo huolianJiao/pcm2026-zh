@@ -1,4 +1,4 @@
-﻿param([ValidateSet('Install','Check','Uninstall','Recover')][string]$Mode='Install')
+﻿param([ValidateSet('Install','Check','Uninstall','Recover','Repair')][string]$Mode='Install')
 $ErrorActionPreference='Stop'
 try {
     $roots=@()

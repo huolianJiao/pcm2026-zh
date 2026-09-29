@@ -1,6 +1,6 @@
 ﻿param(
  [Parameter(Mandatory=$true)][string]$GamePath,
- [ValidateSet('Install','Check','Uninstall','Recover')][string]$Mode='Install',
+ [ValidateSet('Install','Check','Uninstall','Recover','Repair')][string]$Mode='Install',
  [string]$PayloadPath=(Join-Path $PSScriptRoot 'build\payload')
 )
 $ErrorActionPreference='Stop'
@@ -45,7 +45,7 @@ function Manifest($m) {
 $game=[IO.Path]::GetFullPath((Resolve-Path -LiteralPath $GamePath).Path)
 $dll=Join-Path $game 'PCM\Binaries\Win64\GameCyclingDLL_Master.dll'
 $pak=Join-Path $game 'PCM\Content\Paks\pakchunk99-PCM2026ZH_P.pak'
-$backup=Join-Path $game 'PCM26-ZH-Backup'
+$backup=Join-Path $game 'PCM26-ZH-Backup-25503277'
 $original=Join-Path $backup 'GameCyclingDLL_Master.original.dll'
 $statePath=Join-Path $backup 'installed.json'
 $pending=Join-Path $backup 'pending.json'
@@ -99,13 +99,29 @@ try {
   Rollback;exit
  }
  if(Test-Path -LiteralPath $pending){throw 'Interrupted operation detected. Run Recover.cmd before starting the game.'}
- if($Mode -eq 'Install'){
+ if($Mode -in @('Install','Repair')){
   $payload=(Resolve-Path -LiteralPath $PayloadPath).Path;Plain $payload
   $manifestPath=Join-Path $payload 'manifest.json';Plain $manifestPath
   $m=Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json;Manifest $m
   $newDll=Join-Path $payload 'GameCyclingDLL_Master.dll';$newPak=Join-Path $payload $m.pak
   Plain $newDll;Plain $newPak
   if((Hash $newDll) -ne $m.dll_after -or (Hash $newPak) -ne $m.sha256){throw 'Payload hash mismatch; extract package again'}
+  if($Mode -eq 'Repair'){
+   if((Current $dll) -eq $m.dll_before -and (Test-Path -LiteralPath $pak)){
+    if(Test-Path -LiteralPath $statePath){throw 'Current-build state exists; use normal recovery or uninstall first'}
+    if(!($m.PSObject.Properties.Name -contains 'replaces_overlay_sha256')){throw 'No verified legacy overlay list in this release'}
+    $legacy=Current $pak
+    if($legacy -notin $m.replaces_overlay_sha256){throw 'Unknown old overlay; refusing update repair'}
+    $quarantine=Join-Path $backup ('update-'+[Guid]::NewGuid().ToString('N'))
+    [IO.Directory]::CreateDirectory($quarantine) | Out-Null
+    AtomicJson @{dll_original=$m.dll_before;overlay_before=$legacy;note='Steam update repair; old overlay quarantined before clean installation'} (Join-Path $quarantine 'repair.json')
+    Closed
+    if((Current $dll) -ne $m.dll_before -or (Current $pak) -ne $legacy){throw 'Game files changed during repair preparation'}
+    [IO.File]::Move($pak,(Join-Path $quarantine 'previous-overlay.pak'))
+    Write-Host 'Old overlay retained in update backup. If installation stops, game remains on new original DLL without old overlay.'
+   }
+   $Mode='Install'
+  }
   if((Current $dll) -eq $m.dll_after -and (Current $pak) -eq $m.sha256){
    if(!(Test-Path -LiteralPath $statePath) -or (Current $original) -ne $m.dll_before){throw 'Unmanaged old installation: restore with old installer first'}
    $state=Get-Content -LiteralPath $statePath -Raw -Encoding UTF8 | ConvertFrom-Json;Manifest $state
