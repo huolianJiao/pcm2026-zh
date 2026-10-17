@@ -1,12 +1,12 @@
 # PCM26 简体中文汉化
 
-Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.5.0-preview**。仅替换 **Dansk（丹麦语）**，英语保留原文。
+Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.6.0-preview**。仅替换 **Dansk（丹麦语）**，英语保留原文。
 
 非官方项目，许可范围与已知分发风险见[发布风险核查](docs/RIGHTS_REVIEW.md)。本版新增事务日志、失败回滚和中断恢复，仍为预览版。
 
 ## 普通玩家安装
 
-1. 在本仓库 Releases 下载 **PCM26-ZH-v0.5.0-preview.zip**，不要下载 GitHub 自动生成的 Source code ZIP。
+1. 在本仓库 Releases 下载 **PCM26-ZH-v0.6.0-preview.zip**，不要下载 GitHub 自动生成的 Source code ZIP。
 2. 保存进度并退出游戏。Steam 更新后旧汉化变成问号时，请使用下方的 Repair.cmd 流程；其他汉化请按其原安装说明处理。
 3. 把 ZIP 完整解压到一个独立目录。不要直接在压缩软件里运行，也不必复制到游戏目录。
 4. 双击 **Install.cmd**。检测到 Steam 游戏目录后，输入 Y 确认；未找到时粘贴自己的游戏安装目录，例如 `D:\SteamLibrary\steamapps\common\Pro Cycling Manager 2026`。
@@ -22,9 +22,9 @@ Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.5.0-pre
 | 项目 | 当前情况 |
 | --- | --- |
 | 平台 | Windows x64，Steam PCM2026 |
-| 已适配游戏版本 | Steam Build 25503277 |
-| 原版 DLL SHA256 | `b1d51687cb2d232c9d66714868fdcb3a72a1dcae2e37065e4bd5c233a6957b89` |
-| 主文本 | 5555条非空记录已归类，5186条含中文 |
+| 已适配游戏版本 | Steam Build 25827667 |
+| 原版 DLL SHA256 | `537cbba546b9f6e9beb2b631736632e62c8f884360642c117fe795a5df650f89` |
+| 主文本 | 5560条非空记录已归类，5191条含中文 |
 | 术语 | Career车队经营模式：经理模式；月份：1月—12月 |
 | 本版修订 | 洲际赛历／职业洲际车队／洲际车队；赛事介绍中的可见制表符和冗长文字 |
 | 保留英文 | 243条国家地区名；部分品牌、代码、占位文本 |
@@ -40,7 +40,7 @@ Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.5.0-pre
 - [贡献说明](CONTRIBUTING.md)
 - [更新记录](CHANGELOG.md)
 
-源码包含 CDB 读写、pak 校验与构建、中文字体生成、DLL字符映射补丁、5186条译文和安装器。源码仓库不包含游戏 DLL、数据库、纹理、字体文件、解压库或存档。英文原文由本地游戏读取，译文用源文SHA256定位和校验。
+源码包含 CDB 读写、pak 校验与构建、中文字体生成、DLL字符映射补丁、5191条译文和安装器。源码仓库不包含游戏 DLL、数据库、纹理、字体文件、解压库或存档。英文原文由本地游戏读取，译文用源文SHA256定位和校验。
 
 项目原创工具代码采用 MIT 许可证；游戏资源、游戏文本与翻译涉及的原作品、第三方字体和依赖不因此改为 MIT，见 [第三方说明](THIRD_PARTY.md)。
 
@@ -48,10 +48,10 @@ Pro Cycling Manager 2026 非官方简体中文补丁，当前版本 **v0.5.0-pre
 
 Steam 更新可能覆盖字体补丁 DLL，但留下汉化 pak，导致中文显示问号。**不要将旧版 DLL 复制回新版游戏，也不要跳过版本检查。**
 
-1. 保存进度并退出游戏，检查本页的兼容 Steam Build。本版只适配 **25503277**。
+1. 保存进度并退出游戏，检查本页的兼容 Steam Build。本版只适配 **25827667**。
 2. 从 [Releases](https://github.com/huolianJiao/pcm2026-zh/releases) 下载匹配版本的安装 ZIP，完整解压到独立目录。
 3. 如果是更新后残留本项目旧汉化，双击 **Repair.cmd**，确认游戏根目录。首次安装使用 **Install.cmd**。
-4. 修复器核对新版原 DLL 和已知旧汉化包的哈希，将旧包保存到 `PCM26-ZH-Backup-25503277/update-*/previous-overlay.pak`，备份新版原 DLL，再安装新版补丁。遇到未知文件会停止。
+4. 修复器核对新版原 DLL 和已知旧汉化包的哈希，将旧包保存到 `PCM26-ZH-Backup-25827667/update-*/previous-overlay.pak`，备份新版原 DLL，再安装新版补丁。遇到未知文件会停止。
 5. 双击 **Check.cmd**。成功后启动游戏，语言选择 **Dansk（丹麦语）**；英语保持原文。
 6. 卸载本版使用本版 **Uninstall.cmd**，恢复的是新版原 DLL；安装意外中断先运行 **Recover.cmd**。保留所有备份目录，不要用旧版卸载器覆盖新版游戏。
 

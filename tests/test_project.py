@@ -42,7 +42,7 @@ class ProjectTests(unittest.TestCase):
             for mode in ['Install','Install','Check']:
                 r=run(mode);self.assertEqual(r.returncode,0,r.stdout+r.stderr)
             self.assertEqual(dll.read_bytes(),patched)
-            self.assertEqual((game/'PCM26-ZH-Backup-25503277/GameCyclingDLL_Master.original.dll').read_bytes(),original)
+            self.assertEqual((game/'PCM26-ZH-Backup-25827667/GameCyclingDLL_Master.original.dll').read_bytes(),original)
             r=run('Uninstall');self.assertEqual(r.returncode,0,r.stdout+r.stderr)
             self.assertEqual(dll.read_bytes(),original);self.assertFalse(pak.exists())
             dll.write_bytes(b'unknown version')

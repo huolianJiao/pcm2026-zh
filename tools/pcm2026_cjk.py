@@ -9,7 +9,7 @@ def align(n,a):return (n+a-1)//a*a
 
 def build_dll(mapping,diagnostic=False):
     data=bytearray((OUT/'GameCyclingDLL_Master.original.dll').read_bytes())
-    profiles={'ef5ce7b20912b317db77c549f844206844b25d9ffb0a0f7e0e990744fcaac8d4':(0,0),'b1d51687cb2d232c9d66714868fdcb3a72a1dcae2e37065e4bd5c233a6957b89':(23200,23088)}
+    profiles={'537cbba546b9f6e9beb2b631736632e62c8f884360642c117fe795a5df650f89':(24656,24544),'ef5ce7b20912b317db77c549f844206844b25d9ffb0a0f7e0e990744fcaac8d4':(0,0),'b1d51687cb2d232c9d66714868fdcb3a72a1dcae2e37065e4bd5c233a6957b89':(23200,23088)}
     assert sha(data) in profiles,'Unsupported game DLL'
     unicode_delta,font_delta=profiles[sha(data)]
     # Build 25503277: PDB function boundaries and relocation-normalized code/table

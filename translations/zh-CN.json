@@ -10776,6 +10776,24 @@
     "zh": "制定赛历"
   },
   {
+    "idloc": 9541,
+    "strid": "News_CalendarReminderFirstPeriod",
+    "source_sha256": "874bba2fa6515ab5faeb66e937acdea1f65f02d070e02882bc87eedcfd89b071",
+    "zh": "已为你安排全赛季赛历，可在 #PAGECALENDAR{$PAGECALENDARNAME} 页面调整。你需要在 $DEADLINE 前确定 $STARTDATE - $ENDDATE 期间的赛程。如需修改，请尽快操作。\\n\\n报名时段：\\n\\n$PERIODELIST"
+  },
+  {
+    "idloc": 9542,
+    "strid": "NewsObject_CalendarReminder",
+    "source_sha256": "b029daf9b57cefce52c6fa40dbb76a569d4a3896695193ab0288bd8fbe0a6122",
+    "zh": "提醒：制定赛历"
+  },
+  {
+    "idloc": 9543,
+    "strid": "News_CalendarReminder",
+    "source_sha256": "3d99c4562c58a37a965f3626d243359190a47573b95e88ecf6880c300ad753ea",
+    "zh": "请注意！你还有 $TIMELEFT 可以确定 $STARTDATE - $ENDDATE 期间的赛程。$DEADLINE 之后，将无法增删该时段的赛事。\\n\\n你可以在 #PAGECALENDAR{$PAGECALENDARNAME} 页面调整赛历。"
+  },
+  {
     "idloc": 9547,
     "strid": "News_Record_TourMountain_Unique",
     "source_sha256": "53a841c526fac01b179bac1551f5c0d974a52399d42cd320ab0a5d638868712b",
@@ -11026,6 +11044,12 @@
     "strid": "NewsObject_CalendarLastReminder",
     "source_sha256": "326229a6fcea54855e351c3de60703a639523fded482d66334daa22150bbf470",
     "zh": "确认赛历"
+  },
+  {
+    "idloc": 9685,
+    "strid": "News_CalendarLastReminder",
+    "source_sha256": "f484b182d52b1b7ed237f60e2d36c907ce29d02fa8795a824599ecc1483c1edd",
+    "zh": "今天是调整 $STARTDATE 至 $ENDDATE 期间赛程的最后一天。你可以在 #PAGECALENDAR{$PAGECALENDARNAME} 页面提交最后的参赛申请。"
   },
   {
     "idloc": 9686,
@@ -30942,12 +30966,6 @@
     "zh": "重新计算赛事"
   },
   {
-    "idloc": 19742,
-    "strid": "Planner_Disabled_ProCyclist",
-    "source_sha256": "662a4c852dc67b51f0174bad24f71ee8fed48eb1577e7f801f5909370865e9ec",
-    "zh": "1月5日车队批准赛程后，你就可以管理自己的赛历和训练。"
-  },
-  {
     "idloc": 19743,
     "strid": "Planner_Regen_Desc",
     "source_sha256": "3aa1dd8904a79548988df4ae86dace50ff05537d886ffdb1a03e4b60e82450c8",
@@ -31038,12 +31056,6 @@
     "zh": "重新计算所有车手的训练计划。"
   },
   {
-    "idloc": 19758,
-    "strid": "ProCyclist_LeaderRequests_Disabled",
-    "source_sha256": "3e8397123f00691921c66fe372bc791c96c54418d843572c9bade48167c42f1c",
-    "zh": "1月5日车队确认赛程后，你就可以管理队友请求。"
-  },
-  {
     "idloc": 19759,
     "strid": "SeasonProgram_Oman",
     "source_sha256": "c3ce4bf88db5e7b645d4630c54f757f055bd5163d11027fe81e7cc04d3574c42",
@@ -31054,42 +31066,6 @@
     "strid": "NewsAccueilProCyclist_Real",
     "source_sha256": "5977cbe530682e80405f1465acbea0dee4d4b5d4df7f2b3b5dab7b6dcb1da3c4",
     "zh": "$CYCLISTFIRSTNAME，\\n\\n新赛季今日开启，迎来 #TEAM{$TEAMNAME}。\\n\\n我们希望共同创造精彩时刻，甚至赢得赛历中的部分重大赛事。\\n\\n全队祝您赛季愉快。\\n\\n祝您好运！"
-  },
-  {
-    "idloc": 19763,
-    "strid": "GamePreferences_RDC_Effect",
-    "source_sha256": "027911401cb0e140cf783af34a72a770097bf286633305d8188fd6609dd05eeb",
-    "zh": "比赛日状态影响"
-  },
-  {
-    "idloc": 19764,
-    "strid": "GamePreferences_RDC_Effect_Hint",
-    "source_sha256": "1623c50cb4e37ccfc89e10b2f00193f1f79d9816ef382aa61869f6b3e93c937d",
-    "zh": "此滑块调整比赛日状态对属性的影响。应用的增益/惩罚可与默认设置（x1.0）相比有所减少。"
-  },
-  {
-    "idloc": 9541,
-    "strid": "News_CalendarReminderFirstPeriod",
-    "source_sha256": "874bba2fa6515ab5faeb66e937acdea1f65f02d070e02882bc87eedcfd89b071",
-    "zh": "已为你安排全赛季赛历，可在 #PAGECALENDAR{$PAGECALENDARNAME} 页面调整。你需要在 $DEADLINE 前确定 $STARTDATE - $ENDDATE 期间的赛程。如需修改，请尽快操作。\\n\\n报名时段：\\n\\n$PERIODELIST"
-  },
-  {
-    "idloc": 9542,
-    "strid": "NewsObject_CalendarReminder",
-    "source_sha256": "b029daf9b57cefce52c6fa40dbb76a569d4a3896695193ab0288bd8fbe0a6122",
-    "zh": "提醒：制定赛历"
-  },
-  {
-    "idloc": 9543,
-    "strid": "News_CalendarReminder",
-    "source_sha256": "3d99c4562c58a37a965f3626d243359190a47573b95e88ecf6880c300ad753ea",
-    "zh": "请注意！你还有 $TIMELEFT 可以确定 $STARTDATE - $ENDDATE 期间的赛程。$DEADLINE 之后，将无法增删该时段的赛事。\\n\\n你可以在 #PAGECALENDAR{$PAGECALENDARNAME} 页面调整赛历。"
-  },
-  {
-    "idloc": 9685,
-    "strid": "News_CalendarLastReminder",
-    "source_sha256": "f484b182d52b1b7ed237f60e2d36c907ce29d02fa8795a824599ecc1483c1edd",
-    "zh": "今天是调整 $STARTDATE 至 $ENDDATE 期间赛程的最后一天。你可以在 #PAGECALENDAR{$PAGECALENDARNAME} 页面提交最后的参赛申请。"
   },
   {
     "idloc": 19761,
@@ -31104,6 +31080,18 @@
     "zh": "该车手已报名参加同一时段的其他比赛。"
   },
   {
+    "idloc": 19763,
+    "strid": "GamePreferences_RDC_Effect",
+    "source_sha256": "027911401cb0e140cf783af34a72a770097bf286633305d8188fd6609dd05eeb",
+    "zh": "比赛日状态影响"
+  },
+  {
+    "idloc": 19764,
+    "strid": "GamePreferences_RDC_Effect_Hint",
+    "source_sha256": "1623c50cb4e37ccfc89e10b2f00193f1f79d9816ef382aa61869f6b3e93c937d",
+    "zh": "此滑块调整比赛日状态对属性的影响。应用的增益/惩罚可与默认设置（x1.0）相比有所减少。"
+  },
+  {
     "idloc": 19765,
     "strid": "RaceCalendar",
     "source_sha256": "853a67e1c32cabb2735ed11896f673be46f65e2d0a8095a1554af9f4e9192320",
@@ -31114,5 +31102,47 @@
     "strid": "PeriodList",
     "source_sha256": "2b6bb69d9ea319a1178cce866926f1056da7bb9ea80ce47e28371795719911aa",
     "zh": "$DATEBEGIN - $DATEEND：报名截止日期：$DATE"
+  },
+  {
+    "idloc": 19742,
+    "strid": "Planner_Disabled_ProCyclist",
+    "source_sha256": "c9b23da52e13d45e3aec601a5ca4c4718db9be32037c164fc4d9eee1cc606513",
+    "zh": "车队确认你的赛程后，你可从 $DATE 起管理赛事日程和训练。"
+  },
+  {
+    "idloc": 19758,
+    "strid": "ProCyclist_LeaderRequests_Disabled",
+    "source_sha256": "93fcaccd66b7808c86310fc216cb91fca75c10a1bc010d763797a9e871867b95",
+    "zh": "车队确认赛程后，你可从 $DATE 起管理队友协助请求。"
+  },
+  {
+    "idloc": 19767,
+    "strid": "Dialbox_TeamRaceUnsubscribeWarning_Title",
+    "source_sha256": "d9274177ece8858d193b30d38aa2c0c3eb76e8cdfa4e38168b09cea2846a1287",
+    "zh": "取消参赛的影响"
+  },
+  {
+    "idloc": 19768,
+    "strid": "Dialbox_TeamRaceUnsubscribeWarning_Desc",
+    "source_sha256": "7c8b5cb034ec8cf3650a65377f7a930c92094c8102425caca23bb226fecf400d",
+    "zh": "取消报名将同时移除与该赛事相关的安排，确定要继续吗？"
+  },
+  {
+    "idloc": 19769,
+    "strid": "Dialbox_TeamRaceUnsubscribeWarning_Roster",
+    "source_sha256": "0e83d01bf0b30210947ddf660f1dbfd6958029775f98400231a66b40b67044ab",
+    "zh": "已有车手报名参加该赛事"
+  },
+  {
+    "idloc": 19770,
+    "strid": "Dialbox_TeamRaceUnsubscribeWarning_Sponsor",
+    "source_sha256": "aa0c121230fd8538e7afb2c5873eca82a0850becbaf1424285a5e861e6c19f29",
+    "zh": "该赛事是赞助商目标"
+  },
+  {
+    "idloc": 19771,
+    "strid": "Dialbox_TeamRaceUnsubscribeWarning_SP",
+    "source_sha256": "abf9e2e35fe6f161c542993f45ce882467bae5b90d56a9d58ca64902058076cf",
+    "zh": "该赛事已列入部分车手的比赛计划"
   }
 ]

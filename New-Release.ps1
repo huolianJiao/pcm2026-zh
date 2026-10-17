@@ -1,5 +1,5 @@
-param(
-    [ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$')][string]$Version='v0.5.0-preview',
+﻿param(
+    [ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$')][string]$Version='v0.6.0-preview',
     [string]$PayloadPath=(Join-Path $PSScriptRoot 'build\payload')
 )
 $ErrorActionPreference='Stop'

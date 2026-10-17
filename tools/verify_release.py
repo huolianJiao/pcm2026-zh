@@ -57,6 +57,6 @@ def main():
                 print('PASS: actual release payload '+mode,flush=True)
             assert sha(dll)==m['dll_before']
             assert not (game/'PCM/Content/Paks'/m['pak']).exists()
-            assert sha(game/'PCM26-ZH-Backup-25503277/GameCyclingDLL_Master.original.dll')==m['dll_before']
+            assert sha(game/'PCM26-ZH-Backup-25827667/GameCyclingDLL_Master.original.dll')==m['dll_before']
         print('PASS: ZIP, scripts, payload hashes and all pak entries',flush=True)
 if __name__=='__main__':main()

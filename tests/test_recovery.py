@@ -10,7 +10,7 @@ class RecoveryTests(unittest.TestCase):
         self.game=self.root/'Game with spaces';self.payload=self.root/'payload';self.payload.mkdir()
         self.dll=self.game/'PCM/Binaries/Win64/GameCyclingDLL_Master.dll';self.dll.parent.mkdir(parents=True)
         self.pak=self.game/'PCM/Content/Paks/pakchunk99-PCM2026ZH_P.pak';self.pak.parent.mkdir(parents=True)
-        self.backup=self.game/'PCM26-ZH-Backup-25503277';self.pending=self.backup/'pending.json'
+        self.backup=self.game/'PCM26-ZH-Backup-25827667';self.pending=self.backup/'pending.json'
         self.original=b'original DLL';self.patched=b'patched DLL';self.overlay=b'overlay data'
         self.dll.write_bytes(self.original)
         (self.payload/self.dll.name).write_bytes(self.patched);(self.payload/self.pak.name).write_bytes(self.overlay)

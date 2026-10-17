@@ -4,14 +4,14 @@
 
 使用与发布说明匹配的 Windows Steam 版 PCM2026。保存进度，退出游戏；本补丁不修改存档。可以先自行备份存档。
 
-Steam 更新到 Build 25503277 后残留本项目旧汉化时，使用 Repair.cmd；不要恢复旧版 DLL。安装器遇到未知DLL、已有覆盖pak或游戏运行中会停止，不会强行替换。
+Steam 更新到 Build 25827667 后残留本项目旧汉化时，使用 Repair.cmd；不要恢复旧版 DLL。安装器遇到未知DLL、已有覆盖pak或游戏运行中会停止，不会强行替换。
 
 ## 安装
 
-1. 在 Releases 的 Assets 中下载 `PCM26-ZH-v0.5.0-preview.zip`。`Source code`是开发源码，不是安装包。
+1. 在 Releases 的 Assets 中下载 `PCM26-ZH-v0.6.0-preview.zip`。`Source code`是开发源码，不是安装包。
 2. 完整解压，确认有 `Install.cmd`、`Check.cmd`、`Uninstall.cmd`、`Install.ps1`、`Launcher.ps1` 和 `payload` 文件夹。
 3. 双击 `Install.cmd`。自动发现一个游戏目录时确认；否则手动输入游戏根目录，不能选到 `PCM` 或 `Win64` 子目录。
-4. 安装器先检查补丁哈希和游戏DLL版本，再把原版DLL备份到游戏根目录 `PCM26-ZH-Backup-25503277`。
+4. 安装器先检查补丁哈希和游戏DLL版本，再把原版DLL备份到游戏根目录 `PCM26-ZH-Backup-25827667`。
 5. 成功后启动游戏，选择 **Dansk（丹麦语）**。English 仍显示英文，这是预期行为。
 6. 如语言未刷新，退出并重启游戏。双击 `Check.cmd` 验证文件是否与本包一致。
 
@@ -28,11 +28,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -GamePath "D:\
 - 替换 `PCM\Binaries\Win64\GameCyclingDLL_Master.dll`，增加中文字形映射与宽度处理。
 - 添加 `PCM\Content\Paks\pakchunk99-PCM2026ZH_P.pak`，覆盖两份语言数据库的丹麦语列及四档扩展字体。
 - 原游戏pak保持不变。英语及其他非丹麦语LOC列与原版一致。
-- 安装备份位于 `PCM26-ZH-Backup-25503277`，不要删除它。
+- 安装备份位于 `PCM26-ZH-Backup-25827667`，不要删除它。
 
 ## 失败回滚与中断恢复
 
-v0.4.1安装器在修改游戏前校验原版备份、保存本次操作前的DLL／pak／状态，并将新文件暂存且校验。替换使用同盘临时文件与单文件原子替换；操作日志写在 `PCM26-ZH-Backup-25503277/pending.json`。
+v0.4.1安装器在修改游戏前校验原版备份、保存本次操作前的DLL／pak／状态，并将新文件暂存且校验。替换使用同盘临时文件与单文件原子替换；操作日志写在 `PCM26-ZH-Backup-25827667/pending.json`。
 
 发生可捕获的写入错误时自动尝试恢复操作前状态；如果进程被结束或设备意外断电，下次操作会检测到未完成日志，停止安装，要求先运行 **Recover.cmd**。恢复会先核对当前文件与已知操作前／后哈希；遇到Steam更新或其他未知改动会停止，避免把新文件覆盖成旧版本。
 
@@ -69,4 +69,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -GamePath "D:\
 | 空白、方框、错位、崩溃 | 记录游戏版本、分辨率、界面位置和截图；必要时卸载本预览版 |
 
 
-本次 Build 25503277 的问号修复，使用 **Repair.cmd**，详细步骤见 [README](../README.md#steam-更新后修复汉化玩家)。
+本次 Build 25827667 的问号修复，使用 **Repair.cmd**，详细步骤见 [README](../README.md#steam-更新后修复汉化玩家)。

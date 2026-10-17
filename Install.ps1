@@ -45,7 +45,7 @@ function Manifest($m) {
 $game=[IO.Path]::GetFullPath((Resolve-Path -LiteralPath $GamePath).Path)
 $dll=Join-Path $game 'PCM\Binaries\Win64\GameCyclingDLL_Master.dll'
 $pak=Join-Path $game 'PCM\Content\Paks\pakchunk99-PCM2026ZH_P.pak'
-$backup=Join-Path $game 'PCM26-ZH-Backup-25503277'
+$backup=Join-Path $game 'PCM26-ZH-Backup-25827667'
 $original=Join-Path $backup 'GameCyclingDLL_Master.original.dll'
 $statePath=Join-Path $backup 'installed.json'
 $pending=Join-Path $backup 'pending.json'
